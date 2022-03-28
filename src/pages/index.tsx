@@ -51,8 +51,6 @@ export default function Home(): JSX.Element {
       return imageData.data.flat();
     });
 
-    console.log(formatted);
-    console.log(data?.pages);
     return formatted;
   }, [data]);
 
