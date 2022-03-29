@@ -67,6 +67,7 @@ const FileInputBase: ForwardRefRenderFunction<
   const [cancelToken, setCancelToken] = useState<CancelTokenSource>(
     {} as CancelTokenSource
   );
+  const [imgTitle, setImgTitle] = useState('');
 
   const handleImageUpload = useCallback(
     async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
@@ -76,9 +77,9 @@ const FileInputBase: ForwardRefRenderFunction<
 
       setImageUrl('');
       setLocalImageUrl('');
+      setImgTitle('');
       setError('image', null);
       setIsSending(true);
-
       await onChange(event);
       trigger('image');
 
@@ -108,6 +109,7 @@ const FileInputBase: ForwardRefRenderFunction<
 
         setImageUrl(response.data.data.url);
         setLocalImageUrl(URL.createObjectURL(event.target.files[0]));
+        setImgTitle(response.data.data.title);
       } catch (err) {
         if (err?.message === 'Cancelled image upload.') return;
 
@@ -123,7 +125,15 @@ const FileInputBase: ForwardRefRenderFunction<
         setProgress(0);
       }
     },
-    [onChange, setError, setImageUrl, setLocalImageUrl, trigger, toast]
+    [
+      onChange,
+      setError,
+      setImageUrl,
+      setLocalImageUrl,
+      trigger,
+      toast,
+      setImgTitle,
+    ]
   );
 
   useEffect(() => {
@@ -223,6 +233,7 @@ const FileInputBase: ForwardRefRenderFunction<
           {...rest}
         />
       </FormLabel>
+      <Text textAlign="center">{imgTitle}</Text>
     </FormControl>
   );
 };
